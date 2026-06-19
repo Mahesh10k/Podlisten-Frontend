@@ -33,6 +33,7 @@ import {
 } from "@/hooks/use-podcasts";
 import { useUserStore } from "@/store/store";
 import { toast } from "sonner";
+import type { PODCAST_API_RESPONSE } from "../constants";
 
 const Upload = () => {
   const [formData, setFormData] = useState({
@@ -48,7 +49,9 @@ const Upload = () => {
   const { data, isPending } = useGetPodcasts();
   const podcastDeleteMutation = useDeletePodcast();
 
-  const myPodcasts = data?.filter((podcast) => podcast.email === email) || [];
+  const myPodcasts =
+    data?.filter((podcast: PODCAST_API_RESPONSE) => podcast.email === email) ||
+    [];
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -57,7 +60,7 @@ const Upload = () => {
         ...formData,
         email,
       });
-      console.log("response", response)
+      console.log("response", response);
       toast.success(response.message);
       setFormData({
         title: "",
@@ -217,7 +220,7 @@ const Upload = () => {
         <>
           <h1 className="text-3xl font-bold m-1.5 mb-3.5">Uploaded Podcasts</h1>
           <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
-            {myPodcasts.map((podcast) => (
+            {myPodcasts.map((podcast: PODCAST_API_RESPONSE) => (
               <Card
                 key={podcast._id}
                 className="group overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:shadow-xl p-3.5"

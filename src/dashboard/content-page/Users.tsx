@@ -16,6 +16,7 @@ import {
 } from "@/components/ui/table";
 
 import { Users as UsersIcon } from "lucide-react";
+import type { USERS_API_RESPONSE } from "../constants";
 
 const Users = () => {
   const { data = [], isLoading, error } = useGetUsers();
@@ -68,7 +69,7 @@ const Users = () => {
             </TableHeader>
 
             <TableBody>
-              {data.map((user) => (
+              {data.map((user: USERS_API_RESPONSE) => (
                 <TableRow key={user._id}>
                   <TableCell>
                     <div className="flex items-center gap-3">

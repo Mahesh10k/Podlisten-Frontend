@@ -5,13 +5,8 @@ import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import "../App.css";
 import { useUserRegister } from "@/hooks/use-users";
-
-interface ErrorObject {
-  name?: string;
-  email?: string;
-  password?: string;
-  confirmPassword?: string;
-}
+import type { ERROR_OBJECT } from "@/dashboard/constants";
+import type { FirebaseError } from "firebase/app";
 
 const SignupForm = () => {
   const navigate = useNavigate();
@@ -21,29 +16,30 @@ const SignupForm = () => {
     password: "",
     confirmPassword: "",
   });
-  const [errors, setErrors] = useState<ErrorObject>({});
+  const [errors, setErrors] = useState<ERROR_OBJECT>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [authError, setAuthError] = useState("");
   const registerUser = useUserRegister();
 
-  const handleChange = (e) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData({
       ...formData,
       [name]: value,
     });
-
+    
     // Clear error when user starts typing
-    if (errors[name]) {
+    const fieldName = name as keyof ERROR_OBJECT;
+    if (errors[fieldName]) {
       setErrors({
         ...errors,
-        [name]: "",
+        [fieldName]: "",
       });
     }
   };
 
   const validateForm = () => {
-    const tempErrors: ErrorObject = {};
+    const tempErrors: ERROR_OBJECT = {};
     let isValid = true;
 
     // Name validation
@@ -90,7 +86,7 @@ const SignupForm = () => {
     return isValid;
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setAuthError("");
 
@@ -125,9 +121,9 @@ const SignupForm = () => {
         sessionStorage.setItem("registeredEmail", formData.email);
 
         navigate("/login");
-      } catch (error) {
+      } catch (err) {
         // Handle Firebase errors
-        console.error("Signup error:", error);
+        const error = err as FirebaseError;
         let errorMessage = "Failed to create account";
 
         if (error.code === "auth/email-already-in-use") {

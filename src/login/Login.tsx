@@ -8,35 +8,34 @@ import {
   // signInWithPopup,
 } from "firebase/auth";
 import { auth } from "@/firebase/firebase.js";
+import type { FirebaseError } from "firebase/app";
 import { toast } from "sonner";
 import { useUserStore } from "@/store/store";
 import { Input } from "@/components/ui/input";
 import "../App.css";
 import { useUserLogin } from "@/hooks/use-users";
-
-export interface ErrorObject {
-  name?: string;
-  email?: string;
-  password?: string;
-}
+import type { ERROR_OBJECT } from "@/dashboard/constants";
 
 const LoginForm = () => {
   const navigate = useNavigate();
-  const [formData, setFormData] = useState({ email: "", password: "" });
-  const [errors, setErrors] = useState<ErrorObject>({});
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [authError, setAuthError] = useState("");
+  const [formData, setFormData] = useState<{ email: string; password: string }>(
+    { email: "", password: "" },
+  );
+  const [errors, setErrors] = useState<ERROR_OBJECT>({});
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+  const [authError, setAuthError] = useState<string>("");
   const { setUser, updateFavourites } = useUserStore();
   const userLoginMutation = useUserLogin();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
+    const fieldName = name as keyof ERROR_OBJECT;
     setFormData({ ...formData, [name]: value });
-    if (errors[name]) setErrors({ ...errors, [name]: "" });
+    if (errors[fieldName]) setErrors({ ...errors, [fieldName]: "" });
   };
 
   const validateForm = () => {
-    const tempErrors: ErrorObject = {};
+    const tempErrors: ERROR_OBJECT = {};
     let isValid = true;
 
     if (!formData.email) {
@@ -87,7 +86,8 @@ const LoginForm = () => {
         }
 
         setFormData({ email: "", password: "" });
-      } catch (error) {
+      } catch (err) {
+        const error = err as FirebaseError;
         let errorMessage = "Failed to log in";
         if (
           error.code === "auth/user-not-found" ||
@@ -116,7 +116,8 @@ const LoginForm = () => {
     try {
       await sendPasswordResetEmail(auth, formData.email);
       toast.success("Password reset email sent! Check your inbox.");
-    } catch (error) {
+    } catch (err) {
+      const error = err as FirebaseError;
       console.error("Password reset error:", error);
       let errorMessage = "Failed to send reset email";
       if (error.code === "auth/user-not-found") {
