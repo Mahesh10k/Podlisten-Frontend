@@ -128,9 +128,7 @@ export default function LandingPage() {
         </nav>
         <Button
           className="bg-[#161616] hover:bg-[#161616]/85 text-[#FBF6EC] rounded-full px-5"
-          onClick={
-            () => (window.location.href = "/login") /* Navigate to login page */
-          }
+          onClick={handleNavigatePodcasts}
         >
           Sign in
         </Button>
