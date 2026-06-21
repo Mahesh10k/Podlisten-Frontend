@@ -69,7 +69,7 @@ const Users = () => {
             </TableHeader>
 
             <TableBody>
-              {data.map((user: USERS_API_RESPONSE) => (
+              {data.length && data.map((user: USERS_API_RESPONSE) => (
                 <TableRow key={user._id}>
                   <TableCell>
                     <div className="flex items-center gap-3">

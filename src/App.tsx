@@ -11,6 +11,7 @@ import Favourites from "./dashboard/content-page/Favourites";
 import ProtectedRoute from "./dashboard/ProtectedRoute";
 import { Toaster } from "sonner";
 import Users from "./dashboard/content-page/Users";
+import NotFound from "./dashboard/PageNotFound";
 
 const App = () => {
   return (
@@ -20,6 +21,7 @@ const App = () => {
         <Route index element={<LandingPage />}></Route>
         <Route path="/login" element={<LoginForm />}></Route>
         <Route path="/signup" element={<SignupForm />}></Route>
+        <Route path="*" element={<NotFound />}></Route>
         <Route
           path="/dashboard"
           element={
@@ -68,6 +70,10 @@ const App = () => {
             </ProtectedRoute>
           }
         />
+        <Route
+          path="/dashboard/*"
+          element={<Layout children={<NotFound />} />}
+        ></Route>
       </Routes>
     </>
   );
