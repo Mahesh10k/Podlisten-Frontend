@@ -1,9 +1,7 @@
 import { useGetPodcasts } from "@/hooks/use-podcasts";
 import type { PODCAST_API_RESPONSE } from "../constants";
 import { Heart } from "lucide-react";
-
 import { PlayCircle, Headphones } from "lucide-react";
-
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 
 import { Button } from "@/components/ui/button";

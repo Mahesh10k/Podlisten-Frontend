@@ -1,11 +1,7 @@
 import { useGetUsers } from "@/hooks/use-users";
-
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-
 import { Badge } from "@/components/ui/badge";
-
 import {
   Table,
   TableBody,

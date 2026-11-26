@@ -1,6 +1,6 @@
 import type { PODCAST_PAYLOAD } from "@/dashboard/constants";
 
-const DOMAIN = "https://podlisten-server-production.up.railway.app";
+const DOMAIN = "https://podlisten-backend.maheshpikki03.workers.dev";
 const PODCAST_URL = `${DOMAIN}/podcasts`;
 const UPLOAD_URL = `${DOMAIN}/upload`;
 const USERS_URL = `${DOMAIN}/users`;
